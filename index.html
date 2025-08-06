@@ -1,62 +1,91 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8" />
     <title>Recipe Ratio Calculator</title>
     <link rel="icon" type="image/png" sizes="32x32" href="src/favicon.png">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+
 <body>
-    <div class="m-5">
-    <h1 class="text-center">Recipe Ratio Calculator</h1>
-    <p class="mx-5">
-        It is a calculator for chefs who would like to make any recipe be divided into a smaller portion, or multiplied to a bigger portion.
-        Just input the list of ingredients, and choose your multiplier, and you will see your results below.
-    </p>
-    <div class="row">
-        <div class="col-sm-12 col-md-6">
-            <h2 class="text-center">Input</h2>
-            <form id="input-div" onchange="changeValues">
-
-            </form>
-            <button class="btn btn-success w-100 mt-2"  onclick="addIngredient()">
-                <i class="bi bi-plus-circle"></i>
-                Add New Ingredient
-            </button>
+    <div class="m-5 p-5">
+        <h1 class="text-center">Recipe Ratio Calculator</h1>
+        <p class="mx-5">
+            It is a calculator for chefs who would like to make any recipe be divided into a smaller portion, or
+            multiplied to a bigger portion.
+            Just input the list of ingredients, and choose your multiplier, and you will see your results below.
+        </p>
+        <div class="text-center">
+            <h3 class="d-inline">1/</h3>
+            <input type="number" name="divisor" id="divisor" onchange="changeValues()">
+        </div>        
+        <div class="text-center">
+            <input type="number" name="multiplier" id="multiplier" onchange="changeValues()">
+            <h3 class="d-inline">X</h3>
         </div>
-        <div class="col-sm-12 col-md-6" >
-            <h2 class="text-center">Output</h2>
-            <ul id="output-div">
+        
+        <div class="row">
+            <div class="col-sm-12 col-md-6">
+                <h2 class="text-center">Input</h2>
+                <form id="input-div" onchange="changeValues()">
 
-            </ul>
-            <btn class="btn btn-primary w-100" onclick="navigator.clipboard.writeText(outputDiv.innerText)">
-                <i class="bi bi-clipboard"></i>
-                Copy To Clipboard
-            </btn>
+                </form>
+                <button class="btn btn-success w-100 mt-2" onclick="addIngredient()">
+                    <i class="bi bi-plus-circle"></i>
+                    Add New Ingredient
+                </button>
+            </div>
+            <div class="col-sm-12 col-md-6">
+                <h2 class="text-center">Output</h2>
+                <ul id="output-div">
+
+                </ul>
+                <btn class="btn btn-primary w-100" onclick="copyToClipboard()">
+                    <i class="bi bi-clipboard"></i>
+                    Copy To Clipboard
+                </btn>
+            </div>
         </div>
     </div>
-</div>
 
 
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-<script>
-let inputDiv = document.getElementById("input-div");
-let outputDiv = document.getElementById("output-div");
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script>
+        let inputDiv = document.getElementById("input-div");
+        let outputDiv = document.getElementById("output-div");
+        let divisor = document.getElementById("divisor");
+        let divisorValue = divisor.value == 1 || divisor.value == 0 || divisor.value == null ?
+            parseFloat(divisor.value) : 1 / parseFloat(divisor.value);
 
-function addIngredient() {
-    inputDiv.innerHTML+=`
+        let multiplier = document.getElementById("multiplier");
+        let multiplierValue = multiplier.value == 1 || multiplier.value == 0 || multiplier.value == null ?
+            parseFloat(multiplier.value) : 1 / parseFloat(multiplier.value);
+
+
+        function addIngredient() {
+
+            var container = document.createElement("div");
+            container.innerHTML = `
         <div class="input-group mb-3">
             <input type="text" class="form-control" placeholder="Ingredient Name" aria-label="Ingredient Name">
             <input type="number" class="form-control" placeholder="Amount" aria-label="Amount">
             <select class="custom-select">
                 <option selected>Unit</option>
-                <option value="1">grams</option>
-                <option value="2">kilograms</option>
-                <option value="3">liters</option>
-                <option value="4">cups</option>
+                <option value="grams">grams</option>
+                <option value="milliliters">milliliters</option>
+                <option value="cups">cups</option>
+                <option value="pcs">pcs</option>
             </select>
             <div class="input-group-append">
                 <button class="btn btn-danger" type="button" onclick="removeIngredient(this)">
@@ -65,38 +94,63 @@ function addIngredient() {
             </div>
         </div>`;
 
-        outputDiv.innerHTML+=`
+        inputDiv.appendChild(container);
+            outputDiv.innerHTML += `
         <li>Item 
         </li>
-        `;   
+        `;
 
-}
-function changeValues() {
-    let items = inputDiv.getElementsByTagName("input");
-    let outputItems = outputDiv.getElementsByTagName("li");
-    for (let i = 0; i < items.length; i += 3) {
-        let ingredientName = items[i].value;
-        let amount = parseFloat(items[i + 1].value);
-        let unit = items[i + 2].value;
-
-        if (ingredientName && !isNaN(amount) && unit !== "Unit") {
-            outputItems[i / 3].innerText = `${ingredientName}: ${amount} ${unit}`;
-        } else {
-            outputItems[i / 3].innerText = "Incomplete ingredient";
         }
-        i.innerHTML+=""+ingredientName+": "+amount+" "+unit;
-    }
-}
-function removeIngredient(button) {
-    button.parentElement.parentElement.remove();
-    let items = outputDiv.getElementsByTagName("li");
-    if (items.length > 0) {
-        items[items.length - 1].remove();
-    }
+        function changeValues() {
+            let inputItems = inputDiv.getElementsByTagName("input");
+            let selectItems = inputDiv.getElementsByTagName("select");
+            let outputItems = outputDiv.getElementsByTagName("li");
+            let divisor = document.getElementById("divisor");
+            let divisorValue = 1;
+            if (divisor.value != "") {
+                divisorValue = divisor.value == 1 || divisor.value == 0 || divisor.value == '' ?
+                    parseFloat(document.getElementById("divisor").value) : 1 / parseFloat(document.getElementById("divisor").value);
+            }
+
+            let multiplier = document.getElementById("multiplier");
+            let multiplierValue = 1;
+            if (multiplier.value >= 1) {
+                multiplierValue = multiplier.value;
+            } else {
+                multiplierValue = 1;
+            }
 
 
-}
+            for (let i = 0, j = 0; i < inputItems.length; i += 2, j++) {
+                let ingredientName = inputItems[i].value;
+                let amount = (inputItems[i + 1].value);
+                let newAmount = amount * divisorValue * multiplierValue  ;
+                let unit = selectItems[j].value;
 
-</script>
+                if (ingredientName && !isNaN(amount) && unit !== "Unit") {
+                    outputItems[j].innerText = `${ingredientName}: ${newAmount} ${unit}`;
+                } else {
+                    outputItems[j].innerText = "Incomplete ingredient";
+                }
+            }
+        }
+        function removeIngredient(button) {
+            button.parentElement.parentElement.remove();
+            let items = outputDiv.getElementsByTagName("li");
+            if (items.length > 0) {
+                items[items.length - 1].remove();
+            }
+
+
+        }
+
+        function copyToClipboard() {
+            const items = Array.from(outputDiv.getElementsByTagName("li")).map(li => li.innerText);
+            const stringToCopy = items.join(' \n');
+            console.log(stringToCopy);
+            navigator.clipboard.writeText(stringToCopy);;
+        }
+    </script>
 </body>
+
 </html>
