@@ -8,8 +8,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-</head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        #output-side,
+        #input-side {
+            border: 1px solid #dadada;
+            border-radius: 10px 10px 10px 10px;
+            -webkit-border-radius: 10px 10px 10px 10px;
+            -moz-border-radius: 10px 10px 10px 10px;
+        }
+    </style>
+</head>
 
 <body>
     <div class="container">
@@ -22,27 +31,25 @@
         <div class="text-center">
             <h3 class="d-inline">1/</h3>
             <input type="number" name="divisor" id="divisor" onchange="changeValues()">
-        </div>        
+        </div>
         <div class="text-center">
             <input type="number" name="multiplier" id="multiplier" onchange="changeValues()">
             <h3 class="d-inline">X</h3>
         </div>
-        
-        <div class="row">
-            <div class="col-sm-12 col-md-6">
+
+        <div class="row justify-content-center mt-1">
+            <div class="mx-1 col-sm-12 col-md-5 mt-1 p-0" id="input-side">
                 <h2 class="text-center mt-3">Input</h2>
                 <form id="input-div" onchange="changeValues()">
-
                 </form>
                 <button class="btn btn-success w-100 mt-2" onclick="addIngredient()">
                     <i class="bi bi-plus-circle"></i>
                     Add New Ingredient
                 </button>
             </div>
-            <div class="col-sm-12 col-md-6">
+            <div class="mx-1 col-sm-12 col-md-5 mt-1 p-0" id="output-side">
                 <h2 class="text-center mt-3">Output</h2>
                 <ul id="output-div">
-
                 </ul>
                 <btn class="btn btn-primary w-100" onclick="copyToClipboard()">
                     <i class="bi bi-clipboard"></i>
@@ -95,7 +102,7 @@
             </div>
         </div>`;
 
-        inputDiv.appendChild(container);
+            inputDiv.appendChild(container);
             outputDiv.innerHTML += `
         <li>Item 
         </li>
@@ -125,7 +132,7 @@
             for (let i = 0, j = 0; i < inputItems.length; i += 2, j++) {
                 let ingredientName = inputItems[i].value;
                 let amount = (inputItems[i + 1].value);
-                let newAmount = amount * divisorValue * multiplierValue  ;
+                let newAmount = amount * divisorValue * multiplierValue;
                 let unit = selectItems[j].value;
 
                 if (ingredientName && !isNaN(amount) && unit !== "Unit") {
